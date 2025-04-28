@@ -12,7 +12,8 @@ app.get('/crawl-now', async (req, res) => {
     await crawlNow();  // Trigger the crawlNow function
     res.send('Crawl triggered successfully!');
   } catch (error) {
-    res.status(500).send('Error triggering crawl');
+    console.error('Error triggering crawl:', error); // <--- ADD THIS
+    res.status(500).send(`Error triggering crawl: ${error.message}`); // <--- ADD THIS
   }
 });
 
