@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: lovable-crawler
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+
+schedules:
+  - name: Crawl Morning
+    cron: "0 8 * * *" # 08:00 UTC (adjust if your timezone needs)
+    command: curl -X POST https://YOUR-APP-URL/crawl-now
+
+  - name: Crawl Noon
+    cron: "0 12 * * *" # 12:00 UTC
+    command: curl -X POST https://YOUR-APP-URL/crawl-now
+
+  - name: Crawl Afternoon
+    cron: "0 16 * * *" # 16:00 UTC
+    command: curl -X POST https://YOUR-APP-URL/crawl-now
