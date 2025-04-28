@@ -1,21 +1,20 @@
-require('dotenv').config();
 const express = require('express');
+const { crawlNow } = require('./crawler/index'); // Import from crawler/index.js
+
 const app = express();
-const runCrawler = require('./crawler/index.js');
+const port = process.env.PORT || 3000;
 
-app.use(express.json());
-
-// Manual trigger
-app.post('/crawl-now', async (req, res) => {
+// Define the /crawl-now endpoint
+app.get('/crawl-now', async (req, res) => {
   try {
-    console.log('Manual crawl started...');
-    await runCrawler();
-    res.status(200).send('Crawl completed successfully.');
+    console.log('Crawler started!');
+    await crawlNow();  // Trigger the crawlNow function
+    res.send('Crawl triggered successfully!');
   } catch (error) {
-    console.error('Crawl failed:', error);
-    res.status(500).send('Crawl failed.');
+    res.status(500).send('Error triggering crawl');
   }
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});

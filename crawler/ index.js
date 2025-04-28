@@ -12,7 +12,7 @@ const supabase = createClient(
   process.env.SUPABASE_KEY
 );
 
-async function runCrawler() {
+async function crawlNow() {
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext();
   const page = await context.newPage();
@@ -181,4 +181,4 @@ async function scrapePage(page, targetUrl, requests) {
   };
 }
 
-module.exports = runCrawler;
+module.exports = crawlNow;
