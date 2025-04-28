@@ -9,8 +9,8 @@ const mediaGroups = require('../config/media-groups.json');
 const port = 3000;
 
 const supabase = createClient(
-    console.log('SUPABASE_URL:', process.env.SUPABASE_URL);
-    console.log('SUPABASE_KEY:', process.env.SUPABASE_KEY ? 'Exists' : 'Missing');
+  console.log('SUPABASE_URL set:', !!process.env.SUPABASE_URL);
+  console.log('SUPABASE_KEY set:', !!process.env.SUPABASE_KEY);
 );
 
 async function crawlNow() {
