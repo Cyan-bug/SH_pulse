@@ -8,9 +8,13 @@ const videoPlayers = require('../config/video-players.json');
 const mediaGroups = require('../config/media-groups.json');
 const port = 3000;
 
+console.log('SUPABASE_URL set:', !!process.env.SUPABASE_URL);
+console.log('SUPABASE_KEY set:', !!process.env.SUPABASE_KEY);
+
+// Call createClient
 const supabase = createClient(
-  console.log('SUPABASE_URL set:', !!process.env.SUPABASE_URL);
-  console.log('SUPABASE_KEY set:', !!process.env.SUPABASE_KEY);
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_KEY
 );
 
 async function crawlNow() {
