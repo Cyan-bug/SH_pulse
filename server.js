@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const runCrawler = require('./crawler/index');
+const runCrawler = require('./crawler/index.js');
 
 app.use(express.json());
 
