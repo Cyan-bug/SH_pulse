@@ -6,12 +6,11 @@ const robotsParser = require('robots-parser');
 const fetch = require('node-fetch');
 const videoPlayers = require('../config/video-players.json');
 const mediaGroups = require('../config/media-groups.json');
-const port = 3000;
 
 console.log('SUPABASE_URL set:', !!process.env.SUPABASE_URL);
 console.log('SUPABASE_KEY set:', !!process.env.SUPABASE_KEY);
 
-// Call createClient
+// Setup Supabase client
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_KEY
@@ -41,14 +40,6 @@ async function crawlNow() {
       return;
     }
 
-    // (rest of your code...)
-  } catch (err) {
-    console.error('Error inside crawlNow:', err);  // <-- THIS
-    throw err;  // re-throw so server.js knows
-  } finally {
-    await browser.close();
-  }
-}
     const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
     progressBar.start(urls.length, 0);
 
@@ -80,10 +71,10 @@ async function crawlNow() {
             try {
               const url = new URL(href);
               return (
-                url.hostname.includes(location.hostname) && 
+                url.hostname.includes(location.hostname) &&
                 (url.pathname.includes('article') ||
-                url.pathname.includes('news') ||
-                url.pathname.endsWith('.html'))
+                 url.pathname.includes('news') ||
+                 url.pathname.endsWith('.html'))
               );
             } catch {
               return false;
@@ -115,6 +106,7 @@ async function crawlNow() {
           console.log(`Saved: ${articleUrl}`);
           await page.waitForTimeout(3000 + Math.random() * 3000);
         }
+
       } catch (err) {
         console.error('Failed crawling base URL:', baseUrl, err);
       }
@@ -125,8 +117,9 @@ async function crawlNow() {
     progressBar.stop();
     console.log('Crawling finished.');
 
-  } catch (error) {
-    console.error('Crawler failed:', error);
+  } catch (err) {
+    console.error('Error inside crawlNow:', err);
+    throw err;
   } finally {
     await browser.close();
   }
