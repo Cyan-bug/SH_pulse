@@ -18,6 +18,7 @@ const supabase = createClient(
 );
 
 async function crawlNow() {
+  console.log('crawlNow triggered');
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext();
   const page = await context.newPage();
@@ -29,14 +30,25 @@ async function crawlNow() {
       .select('url');
 
     if (error) {
-        console.error('Error fetching URLs from Supabase:', error);
-        throw error; // This will stop execution if there's an error
+      console.error('Supabase fetch error:', error);
+      throw error;
     }
+
+    console.log('Fetched URLs:', urls);
+
     if (!urls || urls.length === 0) {
       console.log('No URLs found.');
       return;
     }
 
+    // (rest of your code...)
+  } catch (err) {
+    console.error('Error inside crawlNow:', err);  // <-- THIS
+    throw err;  // re-throw so server.js knows
+  } finally {
+    await browser.close();
+  }
+}
     const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
     progressBar.start(urls.length, 0);
 
