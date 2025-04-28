@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const { crawlNow } = require(path.join(__dirname, 'crawler', 'index')); // Import from crawler/index.js
+const crawlNow = require(path.join(__dirname, 'crawler', 'index'));
 
 const app = express();
 const port = process.env.PORT || 3000;
