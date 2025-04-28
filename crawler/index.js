@@ -6,6 +6,7 @@ const robotsParser = require('robots-parser');
 const fetch = require('node-fetch');
 const videoPlayers = require('../config/video-players.json');
 const mediaGroups = require('../config/media-groups.json');
+const port = 3000;
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -20,10 +21,12 @@ async function crawlNow() {
   try {
     console.log('Fetching URLs from Supabase...');
     const { data: urls, error } = await supabase
-      .from('crawl_targets')
+      .from('crawl_targets_italy')
       .select('url');
 
-    if (error) throw error;
+    if (error) {
+        console.error('Error fetching URLs from Supabase:', error);
+        throw error; // This will stop execution if there's an error
 
     if (!urls || urls.length === 0) {
       console.log('No URLs found.');
@@ -91,7 +94,7 @@ async function crawlNow() {
           const results = await scrapePage(page, articleUrl, requests);
 
           // Save results
-          await supabase.from('crawl_results').insert([results]);
+          await supabase.from('crawled_data_italy').insert([results]);
 
           console.log(`Saved: ${articleUrl}`);
           await page.waitForTimeout(3000 + Math.random() * 3000);
