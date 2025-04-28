@@ -27,7 +27,7 @@ async function crawlNow() {
     if (error) {
         console.error('Error fetching URLs from Supabase:', error);
         throw error; // This will stop execution if there's an error
-
+    }
     if (!urls || urls.length === 0) {
       console.log('No URLs found.');
       return;
